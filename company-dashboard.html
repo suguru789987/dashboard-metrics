@@ -32,61 +32,90 @@
   </div>
 
   <!-- ────────────────────────────────────────────────── -->
-  <!-- 1. TOP SUMMARY: ROI + Phase構成 + 当月実績 + 4指標達成率 -->
+  <!-- 1. 繁盛店指数 (店舗画面と同じ4タイル構成) -->
   <!-- ────────────────────────────────────────────────── -->
   <div class="card">
-    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 24px;">
+    <h2>🔥 繁盛店指数 <span class="badge-mini" style="background:#d1fae5;color:#047857;">全指標フェーズ別評価</span></h2>
+    <p class="small muted mb-8">主値は全店加重平均。達成率/フェーズ別達成数でフェーズ混在による誤読を防止。</p>
+    <div class="grid grid-4">
 
-      <!-- Left: ROI加重平均 + フェーズ構成バー -->
-      <div>
-        <div class="small muted">全社ROI (加重平均 / 年率)</div>
-        <div style="font-size:42px; font-weight:800; color:#047857; line-height:1.1;">28.3<span style="font-size:22px;">%</span></div>
-        <div class="small muted">投資 ¥620M / 年間営業利益 ¥175M  <span style="margin-left:8px; color:#b91c1c;">(旧ロジック: 41,972,376.8% → 正常化)</span></div>
-
-        <div class="mt-16">
-          <div class="small muted mb-8">フェーズ別 店舗数構成 (全18店)</div>
-          <!-- 横棒スタックバー -->
-          <div style="display:flex; height:14px; border-radius:7px; overflow:hidden; background:#f1f4f9;">
-            <div style="flex:2; background:#3b82f6;" title="立上期 2店"></div>
-            <div style="flex:5; background:#eab308;" title="回収期 5店"></div>
-            <div style="flex:8; background:#10b981;" title="安定期 8店"></div>
-            <div style="flex:3; background:#8b5cf6;" title="成熟期 3店"></div>
-          </div>
-          <div class="flex mt-8 small" style="gap:14px;">
-            <span class="flex"><span class="dot dot-launch"></span>&nbsp;立上期 2 (6.1%)</span>
-            <span class="flex"><span class="dot dot-recovery"></span>&nbsp;回収期 5 (52.4%)</span>
-            <span class="flex"><span class="dot dot-stable"></span>&nbsp;安定期 8 (32.6%)</span>
-            <span class="flex"><span class="dot dot-mature"></span>&nbsp;成熟期 3 (22.1%)</span>
-          </div>
+      <!-- 坪月商 -->
+      <div class="tile" style="border-top:3px solid #10b981">
+        <div class="lbl">坪月商(税抜) <span class="badge-mini">加重平均</span></div>
+        <div class="val">19.4 <span class="small muted">万円/坪</span></div>
+        <div class="small up">目標達成 14/18店 (78%)</div>
+        <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:78%;"></div></div>
+        <div class="small muted mt-8" style="font-size:10px;">
+          フェーズ別達成:
+          <span class="dot dot-launch"></span>2/2
+          <span class="dot dot-recovery" style="margin-left:4px"></span>4/5
+          <span class="dot dot-stable" style="margin-left:4px"></span>6/8
+          <span class="dot dot-mature" style="margin-left:4px"></span>2/3
         </div>
       </div>
 
-      <!-- Right: 4指標の達成率のみ -->
-      <div>
-        <div class="small muted mb-8">繁盛店指数 フェーズ別目標達成率 <span class="muted">(絶対値は異フェーズ混在で意味をなさないため達成率のみ)</span></div>
-        <div class="grid grid-2" style="gap:10px;">
-          <div class="tile" style="padding:10px 12px;">
-            <div class="lbl small">坪月商</div>
-            <div style="font-size:18px; font-weight:700;">14/18店達成 <span class="small up">78%</span></div>
-            <div class="progress" style="height:6px;"><div class="bar" style="width:78%;"></div></div>
-          </div>
-          <div class="tile" style="padding:10px 12px;">
-            <div class="lbl small">営業利益率</div>
-            <div style="font-size:18px; font-weight:700;">15/18店達成 <span class="small up">83%</span></div>
-            <div class="progress" style="height:6px;"><div class="bar" style="width:83%;"></div></div>
-          </div>
-          <div class="tile" style="padding:10px 12px;">
-            <div class="lbl small">家賃比率</div>
-            <div style="font-size:18px; font-weight:700;">12/18店達成 <span class="small" style="color:#a16207">67%</span></div>
-            <div class="progress" style="height:6px;"><div class="bar" style="width:67%; background:linear-gradient(90deg,#eab308,#fbbf24);"></div></div>
-          </div>
-          <div class="tile" style="padding:10px 12px;">
-            <div class="lbl small">ROI</div>
-            <div style="font-size:18px; font-weight:700;">10/11店達成 <span class="small up">91%</span></div>
-            <div class="progress" style="height:6px;"><div class="bar" style="width:91%;"></div></div>
-          </div>
+      <!-- 営業利益率 -->
+      <div class="tile" style="border-top:3px solid #10b981">
+        <div class="lbl">営業利益率 <span class="badge-mini">加重平均</span></div>
+        <div class="val">27.8 <span class="small muted">%</span></div>
+        <div class="small up">目標達成 15/18店 (83%)</div>
+        <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:83%;"></div></div>
+        <div class="small muted mt-8" style="font-size:10px;">
+          フェーズ別達成:
+          <span class="dot dot-launch"></span>0/2
+          <span class="dot dot-recovery" style="margin-left:4px"></span>4/5
+          <span class="dot dot-stable" style="margin-left:4px"></span>8/8
+          <span class="dot dot-mature" style="margin-left:4px"></span>3/3
         </div>
-        <div class="small muted mt-8">※ ROIは安定期/成熟期の11店のみを対象</div>
+      </div>
+
+      <!-- 家賃比率 -->
+      <div class="tile" style="border-top:3px solid #eab308">
+        <div class="lbl">家賃比率 <span class="badge-mini">加重平均</span></div>
+        <div class="val">9.8 <span class="small muted">%</span></div>
+        <div class="small" style="color:#a16207">目標達成 12/18店 (67%)</div>
+        <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:67%; background:linear-gradient(90deg,#eab308,#fbbf24);"></div></div>
+        <div class="small muted mt-8" style="font-size:10px;">
+          フェーズ別達成:
+          <span class="dot dot-launch"></span>2/2
+          <span class="dot dot-recovery" style="margin-left:4px"></span>3/5
+          <span class="dot dot-stable" style="margin-left:4px"></span>5/8
+          <span class="dot dot-mature" style="margin-left:4px"></span>2/3
+        </div>
+      </div>
+
+      <!-- ROI -->
+      <div class="tile" style="border-top:3px solid #10b981; background:#f0fdf4;">
+        <div class="lbl">ROI <span class="badge-mini" style="background:#d1fae5;color:#047857;">加重平均</span></div>
+        <div class="val">28.3 <span class="small muted">%</span></div>
+        <div class="small up">目標達成 10/11店 (91%)</div>
+        <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:91%;"></div></div>
+        <div class="small muted mt-8" style="font-size:10px;">
+          旧: <span style="text-decoration:line-through">41,972,376.8%</span> → 加重平均で正常化
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────────────────────────────────────────── -->
+  <!-- 2. フェーズ構成 -->
+  <!-- ────────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>📊 フェーズ別 店舗数構成 <span class="badge-mini">全18店</span></h2>
+    <div class="flex" style="gap:24px; align-items:center;">
+      <div style="flex:1;">
+        <div style="display:flex; height:16px; border-radius:8px; overflow:hidden; background:#f1f4f9;">
+          <div style="flex:2; background:#3b82f6;" title="立上期 2店"></div>
+          <div style="flex:5; background:#eab308;" title="回収期 5店"></div>
+          <div style="flex:8; background:#10b981;" title="安定期 8店"></div>
+          <div style="flex:3; background:#8b5cf6;" title="成熟期 3店"></div>
+        </div>
+        <div class="flex mt-8 small" style="gap:18px; flex-wrap:wrap;">
+          <span class="flex"><span class="dot dot-launch"></span>&nbsp;立上期 <strong>2店</strong> (ROI進捗平均 6.1%)</span>
+          <span class="flex"><span class="dot dot-recovery"></span>&nbsp;回収期 <strong>5店</strong> (ROI進捗平均 52.4%)</span>
+          <span class="flex"><span class="dot dot-stable"></span>&nbsp;安定期 <strong>8店</strong> (加重ROI 32.6%)</span>
+          <span class="flex"><span class="dot dot-mature"></span>&nbsp;成熟期 <strong>3店</strong> (加重ROI 22.1%)</span>
+        </div>
       </div>
     </div>
   </div>
