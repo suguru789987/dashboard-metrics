@@ -32,6 +32,7 @@
     <a href="#metrics" onclick="showTab(event,'tab-metrics')">② 指標別フェーズ目標</a>
     <a href="#benchmark" onclick="showTab(event,'tab-benchmark')">③ 業態ベンチマーク</a>
     <a href="#shop" onclick="showTab(event,'tab-shop')">④ 店舗別設定</a>
+    <a href="#ui" onclick="showTab(event,'tab-ui')">⑤ UIカスタマイズ</a>
   </div>
 
   <!-- Tab 1: Phase model -->
@@ -441,12 +442,329 @@
     </div>
   </div>
 
+  <!-- Tab 5: UIカスタマイズ -->
+  <div id="tab-ui" style="display:none">
+
+    <div class="card">
+      <h2>🎨 UIカスタマイズ (V89=店舗 / V69=会社 / V17=マッピング共通)</h2>
+      <p class="small muted">繁盛店指数タイル/当月実績タイル/店舗詳細テーブル等の<strong>表示/非表示/順序/サイズ</strong>を顧客ごとに調整。さらに<strong>1次/2次/3次の合成指標</strong>からカスタム指標を作成できます。</p>
+
+      <div class="info-banner">
+        <span>💡</span>
+        <span>スコープ継承: <strong>会社デフォルト → 店舗別オーバーライド → 個人ビュー</strong>。下位で明示設定された場合のみ上書き、未設定は上位を継承。</span>
+      </div>
+    </div>
+
+    <!-- 指標階層エクスプローラ -->
+    <div class="card">
+      <h3 style="font-size:14px;margin:0 0 8px">📚 指標階層(1次 → 2次 → 3次)</h3>
+      <p class="small muted mb-8">すべての指標は階層で整理。下位層は上位層を参照して計算される。カスタム指標作成時はこの階層を利用。</p>
+
+      <div class="grid grid-3" style="gap:10px;">
+        <!-- 1次 -->
+        <div style="border:1px solid #e5e9f0;border-radius:10px;padding:12px 14px;">
+          <div style="font-weight:700;color:#1e40af;margin-bottom:6px;">1次(Raw) <span class="badge-mini">生データ</span></div>
+          <div class="small muted mb-8">POS/会計/マスタから直接取得</div>
+          <table class="data" style="font-size:12px;">
+            <tbody>
+              <tr><td>sales</td><td>売上(税抜)</td></tr>
+              <tr><td>operating_profit</td><td>営業利益</td></tr>
+              <tr><td>food_cost</td><td>食材原価</td></tr>
+              <tr><td>labor_cost</td><td>人件費</td></tr>
+              <tr><td>rent</td><td>家賃</td></tr>
+              <tr><td>initial_invest</td><td>初期投資額</td></tr>
+              <tr><td>tsubo</td><td>坪数</td></tr>
+              <tr><td>customers</td><td>客数</td></tr>
+              <tr><td>avg_price</td><td>客単価</td></tr>
+              <tr><td>months_opened</td><td>オープン経過月数</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2次 -->
+        <div style="border:1px solid #e5e9f0;border-radius:10px;padding:12px 14px;">
+          <div style="font-weight:700;color:#a16207;margin-bottom:6px;">2次(Ratio) <span class="badge-mini">比率・差分</span></div>
+          <div class="small muted mb-8">1次の演算で算出</div>
+          <table class="data" style="font-size:12px;">
+            <tbody>
+              <tr><td>tsubo_sales</td><td>sales ÷ tsubo ÷ 月数</td></tr>
+              <tr><td>profit_rate</td><td>operating_profit ÷ sales × 100</td></tr>
+              <tr><td>rent_rate</td><td>rent ÷ sales × 100</td></tr>
+              <tr><td>food_rate(F)</td><td>food_cost ÷ sales × 100</td></tr>
+              <tr><td>labor_rate(L)</td><td>labor_cost ÷ sales × 100</td></tr>
+              <tr><td>fl_rate</td><td>F + L</td></tr>
+              <tr><td>simple_roi</td><td>operating_profit × 12 ÷ initial_invest × 100</td></tr>
+              <tr><td>cumulative_profit</td><td>Σoperating_profit (オープン〜現在)</td></tr>
+              <tr><td>payback_progress</td><td>cumulative_profit ÷ initial_invest × 100</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 3次 -->
+        <div style="border:1px solid #e5e9f0;border-radius:10px;padding:12px 14px;">
+          <div style="font-weight:700;color:#6d28d9;margin-bottom:6px;">3次(Composite) <span class="badge-mini">合成指標</span></div>
+          <div class="small muted mb-8">2次を合成+フェーズ分岐で高度化</div>
+          <table class="data" style="font-size:12px;">
+            <tbody>
+              <tr><td>phase_roi</td><td>フェーズで計算方式切替 (進捗/年率)</td></tr>
+              <tr><td>target_achievement</td><td>実績 ÷ (業態基準×フェーズ係数)</td></tr>
+              <tr><td>weighted_company_roi</td><td>Σ各店利益 ÷ Σ各店投資 × 100</td></tr>
+              <tr><td>phase_classification</td><td>立上/回収/安定/成熟 判定結果</td></tr>
+              <tr><td>residual_payback_months</td><td>(投資-累計利益) ÷ 直近3ヶ月平均利益</td></tr>
+              <tr><td>benchmark_score</td><td>業態×フェーズ×4指標平均達成率 </td></tr>
+              <tr><td><em>custom_xxx</em></td><td>顧客定義のカスタム指標</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-banner mt-16">
+        <span>📖</span>
+        <span>詳細な計算式は <a href="logic-cheatsheet.html">ロジック可視化ページ</a> を参照。</span>
+      </div>
+    </div>
+
+    <!-- タイル構成エディタ -->
+    <div class="card">
+      <h3 style="font-size:14px;margin:0 0 8px">🧩 タイル構成エディタ</h3>
+      <p class="small muted mb-8">各ダッシュボード(店舗/会社)で表示するタイルを選択・並び替え。ドラッグで順序変更(モック)。</p>
+
+      <div class="grid grid-2" style="gap:16px;">
+
+        <!-- 店舗ダッシュボード -->
+        <div>
+          <h4 style="font-size:13px;margin:0 0 8px">🏪 店舗ダッシュボード (V89)</h4>
+          <div style="border:1px dashed #d8ddea;border-radius:8px;padding:10px;background:#fafbfd;">
+            <div style="display:grid;grid-template-columns:auto 1fr 80px 60px 60px 60px;gap:6px;align-items:center;font-size:12px;">
+              <div class="muted small">#</div>
+              <div class="muted small">タイル名(指標階層)</div>
+              <div class="muted small">サイズ</div>
+              <div class="muted small">表示</div>
+              <div class="muted small">順序</div>
+              <div class="muted small">フェーズ別</div>
+
+              <div>1</div><div>フェーズ別ROIヒーロー <span class="badge-mini">3次</span></div>
+                <div><select style="font-size:11px"><option>大</option><option>中</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="1" style="width:40px;font-size:11px"></div><div><input type="checkbox" checked></div>
+
+              <div>2</div><div>坪月商 <span class="badge-mini">2次</span></div>
+                <div><select style="font-size:11px"><option>中</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="2" style="width:40px;font-size:11px"></div><div><input type="checkbox" checked></div>
+
+              <div>3</div><div>営業利益率 <span class="badge-mini">2次</span></div>
+                <div><select style="font-size:11px"><option>中</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="3" style="width:40px;font-size:11px"></div><div><input type="checkbox" checked></div>
+
+              <div>4</div><div>家賃比率 <span class="badge-mini">2次</span></div>
+                <div><select style="font-size:11px"><option>中</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="4" style="width:40px;font-size:11px"></div><div><input type="checkbox" checked></div>
+
+              <div>5</div><div>ROI <span class="badge-mini">3次</span></div>
+                <div><select style="font-size:11px"><option>中</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="5" style="width:40px;font-size:11px"></div><div><input type="checkbox" checked></div>
+
+              <div>6</div><div>フェーズ遷移履歴 <span class="badge-mini">3次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="6" style="width:40px;font-size:11px"></div><div>—</div>
+
+              <div>7</div><div>当月実績(営業利益/売上/FD/人件費/FL)<span class="badge-mini">1次+2次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="7" style="width:40px;font-size:11px"></div><div>—</div>
+
+              <div>8</div><div>予実カレンダー <span class="badge-mini">1次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="8" style="width:40px;font-size:11px"></div><div>—</div>
+
+              <div>+</div><div colspan="5"><button class="btn btn-sm">＋ カスタムタイル追加</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 会社ダッシュボード -->
+        <div>
+          <h4 style="font-size:13px;margin:0 0 8px">🏢 会社ダッシュボード (V69)</h4>
+          <div style="border:1px dashed #d8ddea;border-radius:8px;padding:10px;background:#fafbfd;">
+            <div style="display:grid;grid-template-columns:auto 1fr 80px 60px 60px 60px;gap:6px;align-items:center;font-size:12px;">
+              <div class="muted small">#</div>
+              <div class="muted small">タイル名(指標階層)</div>
+              <div class="muted small">サイズ</div>
+              <div class="muted small">表示</div>
+              <div class="muted small">順序</div>
+              <div class="muted small">加重</div>
+
+              <div>1</div><div>繁盛店指数(4タイル加重平均) <span class="badge-mini">3次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="1" style="width:40px;font-size:11px"></div><div><input type="checkbox" checked></div>
+
+              <div>2</div><div>フェーズ別店舗数構成バー <span class="badge-mini">3次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="2" style="width:40px;font-size:11px"></div><div>—</div>
+
+              <div>3</div><div>当月実績(全店合計) <span class="badge-mini">1次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="3" style="width:40px;font-size:11px"></div><div>—</div>
+
+              <div>4</div><div>店舗詳細(4ビュー切替) <span class="badge-mini">3次</span></div>
+                <div><select style="font-size:11px"><option>大</option></select></div>
+                <div><input type="checkbox" checked></div><div><input type="number" value="4" style="width:40px;font-size:11px"></div><div>—</div>
+
+              <div>+</div><div colspan="5"><button class="btn btn-sm">＋ カスタムタイル追加</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- カスタム指標ビルダー -->
+    <div class="card">
+      <h3 style="font-size:14px;margin:0 0 8px">🔬 カスタム指標ビルダー (3次指標の作成)</h3>
+      <p class="small muted mb-8">既存の1次/2次指標を組み合わせて顧客独自のタイルを作成。式はシンプルな四則演算+組み込み関数で記述。</p>
+
+      <div class="grid grid-2" style="gap:16px;">
+        <div>
+          <label class="field">
+            <span>指標コード(英数字)</span>
+            <input type="text" value="custom_efficiency_score">
+          </label>
+          <label class="field">
+            <span>表示名</span>
+            <input type="text" value="運営効率スコア">
+          </label>
+          <label class="field">
+            <span>単位</span>
+            <input type="text" value="点">
+          </label>
+          <label class="field">
+            <span>算出式(1次/2次の指標コードで記述)</span>
+            <textarea rows="3" style="width:100%;padding:7px 10px;border:1px solid #d8ddea;border-radius:6px;font-size:13px;font-family:ui-monospace,monospace;">(profit_rate / 12 * 100) + (tsubo_sales / 17.5 * 50) - (rent_rate - 10) * 5</textarea>
+          </label>
+          <label class="field">
+            <span>フェーズ別目標</span>
+            <input type="text" value="立上30 / 回収50 / 安定70 / 成熟80">
+          </label>
+          <label class="field">
+            <span>評価方式</span>
+            <select>
+              <option>高いほど良い(上限なし)</option>
+              <option>高いほど良い(100キャップ)</option>
+              <option>低いほど良い</option>
+              <option>範囲内が良い(min-max指定)</option>
+            </select>
+          </label>
+        </div>
+
+        <div>
+          <div class="small muted mb-8">プレビュー</div>
+          <div class="tile" style="border-top:3px solid #10b981">
+            <div class="lbl">運営効率スコア <span class="badge-mini">カスタム3次</span></div>
+            <div class="val">72.5 <span class="small muted">点</span></div>
+            <div class="small up">安定期目標70+ 達成</div>
+            <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:90%;"></div></div>
+            <div class="small muted mt-8" style="font-size:10px;">
+              立上:30 / 回収:50 / 安定:70 / 成熟:80
+            </div>
+          </div>
+
+          <div class="mt-16 small muted">式評価結果(サンプル):</div>
+          <div class="formula" style="font-size:11px;line-height:1.5;padding:10px 12px;">
+<span class="c"># profit_rate=28.5, tsubo_sales=22.3, rent_rate=10.7</span>
+= (28.5 / 12 * 100) + (22.3 / 17.5 * 50) - (10.7 - 10) * 5
+= 237.5 + 63.7 - 3.5
+= <span class="n">297.7</span>  (× 正規化係数で 72.5点表示)
+</div>
+        </div>
+      </div>
+
+      <div class="mt-16 flex">
+        <button class="btn btn-primary">カスタム指標を保存</button>
+        <button class="btn">式のテスト実行</button>
+      </div>
+    </div>
+
+    <!-- プリセット管理 -->
+    <div class="card">
+      <h3 style="font-size:14px;margin:0 0 8px">📦 プリセット管理</h3>
+      <p class="small muted mb-8">業態/フェーズ/顧客規模ごとの<strong>タイル構成テンプレート</strong>。1クリックで構成適用。</p>
+
+      <table class="data">
+        <thead>
+          <tr><th>プリセット名</th><th>対象</th><th>タイル数</th><th>カスタム指標</th><th>使用店舗</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>標準(デフォルト)</td><td>全業態共通</td><td class="num">8</td><td class="num">0</td><td class="num">12店</td>
+            <td><button class="btn btn-sm">適用</button></td>
+          </tr>
+          <tr>
+            <td>成熟期向け</td><td>成熟期店舗</td><td class="num">6</td><td class="num">1(劣化トレンド)</td><td class="num">3店</td>
+            <td><button class="btn btn-sm">適用</button></td>
+          </tr>
+          <tr>
+            <td>立上期向け</td><td>立上期店舗</td><td class="num">5</td><td class="num">1(回収進捗強調)</td><td class="num">2店</td>
+            <td><button class="btn btn-sm">適用</button></td>
+          </tr>
+          <tr>
+            <td>ダイニング業態向け</td><td>業態=ダイニング</td><td class="num">9</td><td class="num">2(単価/客数強調)</td><td class="num">7店</td>
+            <td><button class="btn btn-sm">適用</button></td>
+          </tr>
+          <tr style="background:#fef9c3">
+            <td><input type="text" value="顧客独自A" style="width:140px;font-size:12px"></td>
+            <td><input type="text" value="オーナー特定店のみ" style="width:180px;font-size:12px"></td>
+            <td class="num"><input type="number" value="10" style="width:60px;font-size:12px"></td>
+            <td class="num"><input type="number" value="3" style="width:60px;font-size:12px"></td>
+            <td class="num">—</td>
+            <td><button class="btn btn-sm">保存</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-16 flex">
+        <button class="btn btn-sm">＋ 新規プリセット</button>
+        <button class="btn btn-sm">プリセットをエクスポート(JSON)</button>
+        <button class="btn btn-sm">プリセットをインポート</button>
+      </div>
+    </div>
+
+    <!-- スコープ継承 -->
+    <div class="card">
+      <h3 style="font-size:14px;margin:0 0 8px">🌳 スコープ継承ルール</h3>
+      <div class="formula">
+<span class="c"># 適用優先順位(上から下へ、下位で未設定なら上位を継承)</span>
+<span class="k">会社デフォルト設定</span>
+  └─ <span class="k">業態別プリセット</span>(業態コードでマッチ)
+       └─ <span class="k">フェーズ別プリセット</span>(現在フェーズでマッチ)
+            └─ <span class="k">店舗個別オーバーライド</span>(店舗マスタで明示設定)
+                 └─ <span class="k">個人ビュー</span>(ユーザー個人の表示設定、任意)
+
+<span class="c"># 設定解決例:</span>
+店舗「Antique Chic Brooch横浜店(ダイニング/安定期)」のタイル構成
+  1. 会社デフォルト → タイル8個
+  2. ダイニング業態プリセット上書き → タイル9個
+  3. 安定期プリセット上書き → 「劣化トレンド」タイル非表示
+  4. 店舗個別 → 「加重ROI」タイル追加
+  → 最終: タイル9個表示
+</div>
+    </div>
+
+    <!-- プレビュー導線 -->
+    <div class="card">
+      <h3 style="font-size:14px;margin:0 0 8px">👀 プレビュー</h3>
+      <p class="small muted mb-8">設定を適用した状態のダッシュボードを確認できます。</p>
+      <div class="flex">
+        <a href="shop-dashboard.html?preview=1" class="btn" target="_blank">🏪 店舗ダッシュボード プレビュー</a>
+        <a href="company-dashboard.html?preview=1" class="btn" target="_blank">🏢 会社ダッシュボード プレビュー</a>
+        <button class="btn btn-primary" style="margin-left:auto;">設定を保存</button>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 <script>
 function showTab(e, id) {
   e.preventDefault();
-  ['tab-phase','tab-metrics','tab-benchmark','tab-shop'].forEach(i => document.getElementById(i).style.display = (i === id ? '' : 'none'));
+  ['tab-phase','tab-metrics','tab-benchmark','tab-shop','tab-ui'].forEach(i => document.getElementById(i).style.display = (i === id ? '' : 'none'));
   document.querySelectorAll('.tabs > a').forEach(a => a.classList.remove('active'));
   e.target.classList.add('active');
 }
