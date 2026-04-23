@@ -24,13 +24,14 @@
 
 <div class="page">
 
-  <h1 class="page-title">フェーズ別ROI 設定</h1>
-  <p class="page-sub">会社全体のフェーズモデル、業態ベンチマーク、店舗別パラメータをカスタマイズできます。</p>
+  <h1 class="page-title">繁盛店指数 フェーズ別評価 設定</h1>
+  <p class="page-sub">フェーズモデル / 全指標のフェーズ別目標値 / 業態ベンチマーク / 店舗別パラメータをカスタマイズできます。</p>
 
   <div class="tabs">
     <a href="#phase" class="active" onclick="showTab(event,'tab-phase')">① フェーズモデル</a>
-    <a href="#benchmark" onclick="showTab(event,'tab-benchmark')">② 業態ベンチマーク</a>
-    <a href="#shop" onclick="showTab(event,'tab-shop')">③ 店舗別設定</a>
+    <a href="#metrics" onclick="showTab(event,'tab-metrics')">② 指標別フェーズ目標</a>
+    <a href="#benchmark" onclick="showTab(event,'tab-benchmark')">③ 業態ベンチマーク</a>
+    <a href="#shop" onclick="showTab(event,'tab-shop')">④ 店舗別設定</a>
   </div>
 
   <!-- Tab 1: Phase model -->
@@ -121,37 +122,223 @@
     </div>
   </div>
 
-  <!-- Tab 2: Benchmark -->
+  <!-- Tab 2: Metrics per Phase -->
+  <div id="tab-metrics" style="display:none">
+    <div class="card">
+      <h2>📊 指標別 フェーズ目標設定</h2>
+      <p class="small muted">4つの繁盛店指数(坪月商/営業利益率/家賃比率/ROI)について、フェーズごとの目標値・評価方式を定義します。各目標値は「業態別ベンチマーク × フェーズ係数」で自動算出、または固定値で直接指定が可能です。</p>
+
+      <div class="info-banner">
+        <span>💡</span>
+        <span>目標値は<strong>業態×フェーズ</strong>の2軸で決まり、さらに店舗別オーバーライド可能。例えば居酒屋の立上期の坪月商目標は「業態基準15万円 × 立上期係数0.6 = 9万円」になります。</span>
+      </div>
+
+      <!-- 坪月商 -->
+      <div class="card" style="border-left:4px solid #3b82f6; margin-top:16px">
+        <h3 style="font-size:14px;margin:0 0 8px">① 坪月商 (万円/坪/月)</h3>
+        <div class="small muted mb-8">計算式: 売上税抜 ÷ 坪数 ÷ 営業月数</div>
+        <table class="data">
+          <thead>
+            <tr><th>フェーズ</th><th>目標算出</th><th class="num">係数</th><th>評価区分</th><th>表示</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+              <td><select><option selected>業態基準×係数</option><option>固定値</option><option>評価対象外</option></select></td>
+              <td class="num"><input type="number" value="0.6" step="0.1" style="width:70px"></td>
+              <td>好調: ≥係数+20% / 標準: ±20% / 要改善: &lt;係数-20%</td>
+              <td><input type="checkbox" checked> ダッシュ表示</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="0.8" step="0.1" style="width:70px"></td>
+              <td>±20%</td>
+              <td><input type="checkbox" checked> ダッシュ表示</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="1.0" step="0.1" style="width:70px"></td>
+              <td>±20%</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="1.0" step="0.1" style="width:70px"></td>
+              <td>±20%</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 営業利益率 -->
+      <div class="card" style="border-left:4px solid #10b981; margin-top:12px">
+        <h3 style="font-size:14px;margin:0 0 8px">② 営業利益率 (%)</h3>
+        <div class="small muted mb-8">計算式: 営業利益 ÷ 売上税抜 × 100</div>
+        <table class="data">
+          <thead>
+            <tr><th>フェーズ</th><th>目標算出</th><th class="num">係数</th><th>評価区分</th><th>表示</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="0.4" step="0.1" style="width:70px"></td>
+              <td>赤字許容、業態基準の40%達成で標準</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="0.7" step="0.1" style="width:70px"></td>
+              <td>±15%</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="1.0" step="0.1" style="width:70px"></td>
+              <td>±15%</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+              <td><select><option selected>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="1.1" step="0.1" style="width:70px"></td>
+              <td>±15% (成熟店は高めを期待)</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 家賃比率 -->
+      <div class="card" style="border-left:4px solid #eab308; margin-top:12px">
+        <h3 style="font-size:14px;margin:0 0 8px">③ 家賃比率 (%)</h3>
+        <div class="small muted mb-8">計算式: 月次家賃 ÷ 売上税抜 × 100 (低いほど良い)</div>
+        <table class="data">
+          <thead>
+            <tr><th>フェーズ</th><th>目標算出</th><th class="num">目標上限(%)</th><th>評価区分</th><th>表示</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+              <td><select><option selected>固定値</option><option>業態基準×係数</option></select></td>
+              <td class="num"><input type="number" value="15" step="0.5" style="width:70px"></td>
+              <td>オープン直後は売上低く高比率許容</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+              <td><select><option selected>固定値</option></select></td>
+              <td class="num"><input type="number" value="12" step="0.5" style="width:70px"></td>
+              <td>超過で警告</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+              <td><select><option selected>固定値</option></select></td>
+              <td class="num"><input type="number" value="10" step="0.5" style="width:70px"></td>
+              <td>一般的な飲食店の適正値</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+              <td><select><option selected>固定値</option></select></td>
+              <td class="num"><input type="number" value="8" step="0.5" style="width:70px"></td>
+              <td>成熟店は低比率が目標</td>
+              <td><input type="checkbox" checked></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ROI -->
+      <div class="card" style="border-left:4px solid #8b5cf6; margin-top:12px">
+        <h3 style="font-size:14px;margin:0 0 8px">④ ROI</h3>
+        <div class="small muted mb-8">フェーズによって計算方式自体が切り替わる唯一の指標</div>
+        <table class="data">
+          <thead>
+            <tr><th>フェーズ</th><th>計算方式</th><th class="num">目標値</th><th>評価区分</th><th>上限キャップ</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+              <td><select><option selected>回収進捗率</option><option>非表示</option></select></td>
+              <td class="num"><input type="number" value="5" style="width:70px">%</td>
+              <td>立上期の進捗確認</td>
+              <td>100%</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+              <td><select><option selected>回収進捗率</option></select></td>
+              <td class="num"><input type="number" value="50" style="width:70px">%</td>
+              <td>目標回収期間の中間地点</td>
+              <td>100%</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+              <td><select><option selected>年率ROI</option></select></td>
+              <td class="num"><input type="number" value="25" style="width:70px">%</td>
+              <td>投資効率の評価軸</td>
+              <td>なし(異常値警告)</td>
+            </tr>
+            <tr>
+              <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+              <td><select><option selected>年率ROI + 3年トレンド</option></select></td>
+              <td class="num"><input type="number" value="20" style="width:70px">%</td>
+              <td>投資効率 + 劣化傾向監視</td>
+              <td>なし</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-16 flex">
+        <button class="btn btn-primary">保存</button>
+        <button class="btn">デフォルトに戻す</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Benchmark -->
   <div id="tab-benchmark" style="display:none">
     <div class="card">
       <h2>🏷️ 業態ベンチマーク</h2>
       <p class="small muted">デフォルト業態(7種)は初期提供。顧客独自の業態を追加登録できます。</p>
+
+      <p class="small muted">各業態について<strong>4指標(坪月商/利益率/家賃比率/目安回収期間)</strong>のベンチマーク値を登録。指標別フェーズ目標タブで設定した係数と掛け合わせて各フェーズの目標値が決まります。</p>
 
       <table class="data">
         <thead>
           <tr>
             <th>業態コード</th>
             <th>業態名</th>
-            <th class="num">坪月商(万円)</th>
-            <th class="num">営業利益率(%)</th>
-            <th class="num">目安回収期間(月)</th>
+            <th class="num">坪月商<br>(万円)</th>
+            <th class="num">営業利益率<br>(%)</th>
+            <th class="num">家賃比率<br>(%目安)</th>
+            <th class="num">回収期間<br>(月)</th>
             <th>提供元</th>
             <th style="width:60px"></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>IZAKAYA</td><td>居酒屋</td><td class="num"><input type="number" value="15" style="width:70px"></td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="30" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
-          <tr><td>DINING</td><td>ダイニング</td><td class="num"><input type="number" value="17.5" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
-          <tr><td>CAFE</td><td>カフェ</td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="8" style="width:70px"></td><td class="num"><input type="number" value="48" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
-          <tr><td>RAMEN</td><td>ラーメン</td><td class="num"><input type="number" value="22" style="width:70px"></td><td class="num"><input type="number" value="15" style="width:70px"></td><td class="num"><input type="number" value="24" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
-          <tr><td>YAKINIKU</td><td>焼肉</td><td class="num"><input type="number" value="20" style="width:70px"></td><td class="num"><input type="number" value="14" style="width:70px"></td><td class="num"><input type="number" value="30" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
-          <tr><td>BAR</td><td>バー</td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="20" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
-          <tr><td>WASHOKU</td><td>和食</td><td class="num"><input type="number" value="18" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>IZAKAYA</td><td>居酒屋</td><td class="num"><input type="number" value="15" style="width:70px"></td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="30" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>DINING</td><td>ダイニング</td><td class="num"><input type="number" value="17.5" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>CAFE</td><td>カフェ</td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="8" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="48" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>RAMEN</td><td>ラーメン</td><td class="num"><input type="number" value="22" style="width:70px"></td><td class="num"><input type="number" value="15" style="width:70px"></td><td class="num"><input type="number" value="8" style="width:70px"></td><td class="num"><input type="number" value="24" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>YAKINIKU</td><td>焼肉</td><td class="num"><input type="number" value="20" style="width:70px"></td><td class="num"><input type="number" value="14" style="width:70px"></td><td class="num"><input type="number" value="9" style="width:70px"></td><td class="num"><input type="number" value="30" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>BAR</td><td>バー</td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="20" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>WASHOKU</td><td>和食</td><td class="num"><input type="number" value="18" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
           <tr style="background:#fef9c3">
             <td><input type="text" value="BISTRO" style="width:90px"></td>
             <td><input type="text" value="ビストロ(カスタム)" style="width:160px"></td>
             <td class="num"><input type="number" value="16" style="width:70px"></td>
             <td class="num"><input type="number" value="11" style="width:70px"></td>
+            <td class="num"><input type="number" value="10" style="width:70px"></td>
             <td class="num"><input type="number" value="40" style="width:70px"></td>
             <td><span class="badge-mini" style="background:#fde68a;color:#92400e">カスタム</span></td>
             <td><button class="btn btn-sm btn-danger">削除</button></td>
@@ -259,7 +446,7 @@
 <script>
 function showTab(e, id) {
   e.preventDefault();
-  ['tab-phase','tab-benchmark','tab-shop'].forEach(i => document.getElementById(i).style.display = (i === id ? '' : 'none'));
+  ['tab-phase','tab-metrics','tab-benchmark','tab-shop'].forEach(i => document.getElementById(i).style.display = (i === id ? '' : 'none'));
   document.querySelectorAll('.tabs > a').forEach(a => a.classList.remove('active'));
   e.target.classList.add('active');
 }
