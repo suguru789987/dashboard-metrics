@@ -40,32 +40,22 @@
     </div>
   </div>
 
-  <!-- ROI hero - Phase based -->
+  <!-- ROI: 月次利回り(暫定仕様。フェーズ別仕様は持ち越し) -->
   <div class="card" id="roi-hero-card">
-    <h2>💡 フェーズ別ROI 指標</h2>
+    <h2>💡 ROI 指標 <span class="badge-mini" style="background:#fef3c7;color:#92400e;">月次利回り(暫定)</span></h2>
+    <p class="small muted mb-8">現仕様は<strong>月次利回り = 単月営業利益 ÷ 初期投資額 × 100</strong>。フェーズ別仕様(投資回収期間ベース)は別途検討中。</p>
 
     <div class="roi-hero">
       <!-- Left: main value -->
       <div>
-        <div class="phase-row">
-          <span class="phase-badge phase-stable" id="phase-badge">🟢 安定期 Stable</span>
-          <span class="muted small" id="phase-caption">回収完了後 8ヶ月経過</span>
-        </div>
-        <div class="lbl" id="roi-label">年率ROI (直近12ヶ月)</div>
-        <div class="main-val" id="roi-value">38.5%</div>
-        <div class="muted small" id="roi-formula-note">= 直近12ヶ月営業利益 ÷ 初期投資額 × 100</div>
+        <div class="lbl" id="roi-label">月次利回り</div>
+        <div class="main-val" id="roi-value">3.8%</div>
+        <div class="muted small" id="roi-formula-note">= 単月営業利益 ¥1,897,000 ÷ 初期投資額 ¥50,000,000 × 100</div>
 
-        <div class="phase-timeline mt-16">
-          <div class="phase-seg" data-p="launch"></div>
-          <div class="phase-seg" data-p="recovery"></div>
-          <div class="phase-seg active-stable" data-p="stable"></div>
-          <div class="phase-seg" data-p="mature"></div>
-        </div>
-        <div class="phase-timeline" style="margin-top:2px">
-          <div class="phase-seg-lbl">立上期</div>
-          <div class="phase-seg-lbl">回収期</div>
-          <div class="phase-seg-lbl current">安定期</div>
-          <div class="phase-seg-lbl">成熟期</div>
+        <!-- アラート表示エリア(条件を満たすときのみ表示) -->
+        <div id="roi-alert" class="warn-banner mt-16" style="display:none">
+          <span>⚠️</span>
+          <span id="roi-alert-text">初期投資額が設定されていないです</span>
         </div>
       </div>
 
@@ -73,40 +63,38 @@
       <div>
         <div class="sub-grid">
           <div class="sub-item">
-            <div class="lbl-s">投資回収期間 (計画)</div>
-            <div class="val-s" id="plan-payback">28ヶ月</div>
-            <div class="small muted">目標: 36ヶ月 <span class="up small">▲8ヶ月短縮</span></div>
+            <div class="lbl-s">単月営業利益</div>
+            <div class="val-s" id="monthly-profit">¥1,897,000</div>
+            <div class="small muted">当月実績</div>
           </div>
           <div class="sub-item">
-            <div class="lbl-s">実績回収期間</div>
-            <div class="val-s" id="actual-payback">26ヶ月</div>
-            <div class="small muted">2024/02 オープン → 2026/04 回収完了</div>
+            <div class="lbl-s">初期投資額</div>
+            <div class="val-s" id="initial-invest">¥50,000,000</div>
+            <div class="small muted">店舗設定より</div>
           </div>
           <div class="sub-item">
-            <div class="lbl-s">回収倍率 (累計利益÷初期投資)</div>
-            <div class="val-s" id="payback-ratio">1.21倍</div>
-            <div class="small up">+21% 超過利益を生成中</div>
+            <div class="lbl-s">月次利回り(判定)</div>
+            <div class="val-s" id="roi-status">🟢 正常範囲</div>
+            <div class="small muted">0〜100%の範囲</div>
           </div>
           <div class="sub-item">
-            <div class="lbl-s">回収進捗率</div>
-            <div class="val-s">121.0%</div>
-            <div class="progress mt-8"><div class="bar" style="width:100%"></div></div>
-            <div class="progress-labels"><span>0</span><span>初期投資 ¥50,000,000</span></div>
+            <div class="lbl-s">年換算(参考)</div>
+            <div class="val-s" id="annual-reference">45.6%</div>
+            <div class="small muted">月次利回り × 12</div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="mt-16 small muted">
-      ℹ️ 予測方式: <strong>実績ベース (直近3ヶ月平均)</strong> / 業態: <strong>ダイニング</strong> / 目標回収期間: <strong>36ヶ月</strong>
-      <a href="settings.html" class="btn btn-sm" style="margin-left:8px">設定変更</a>
+      ℹ️ <strong>アラート発動条件</strong>: 初期投資額 = 0 / 未設定 / 月次利回り > 100%(構造的異常値) → 「初期投資額が設定されていないです」
     </div>
   </div>
 
-  <!-- Phase-aware metrics -->
+  <!-- Phase-aware metrics (ROIのみ月次利回りに戻し、他3指標はフェーズ別のまま) -->
   <div class="card">
-    <h2>🔥 繁盛店指数 <span class="badge-mini" style="background:#d1fae5;color:#047857;">全指標フェーズ別評価</span></h2>
-    <p class="small muted mb-8">現在フェーズ<strong>「🟢 安定期」</strong>における各指標の目標値と評価。目標値はフェーズ × 業態(ダイニング) × 店舗オーバーライドの三重で決定。</p>
+    <h2>🔥 繁盛店指数 <span class="badge-mini" style="background:#d1fae5;color:#047857;">フェーズ別評価(3指標) + 月次利回り(ROI暫定)</span></h2>
+    <p class="small muted mb-8">坪月商/営業利益率/家賃比率: フェーズ × 業態(ダイニング) × 店舗の三重で目標決定。ROIのみ<strong>月次利回り</strong>に戻し、フェーズ別仕様は持ち越し。</p>
     <div class="grid grid-4">
       <!-- 坪月商 -->
       <div class="tile" style="border-top:3px solid #10b981">
@@ -138,14 +126,14 @@
           立上期:15%以下 / 回収期:12%以下 / 安定期:10%以下 / 成熟期:8%以下
         </div>
       </div>
-      <!-- ROI -->
-      <div class="tile" style="border-top:3px solid #10b981; background:#f0fdf4;">
-        <div class="lbl">ROI <span class="badge-mini" style="background:#d1fae5;color:#047857;">年率(フェーズ別)</span></div>
-        <div class="val">38.5 <span class="small muted">%</span></div>
-        <div class="progress mt-8"><div class="bar" style="width:100%; background:linear-gradient(90deg,#10b981,#34d399)"></div></div>
-        <div class="sub"><span class="dot dot-stable"></span> 安定期・年率換算 (目標25%)</div>
+      <!-- ROI: 月次利回り(暫定) -->
+      <div class="tile" style="border-top:3px solid #f59e0b; background:#fffbeb;">
+        <div class="lbl">ROI <span class="badge-mini" style="background:#fef3c7;color:#92400e;">月次利回り(暫定)</span></div>
+        <div class="val">3.8 <span class="small muted">%/月</span></div>
+        <div class="progress mt-8"><div class="bar" style="width:3.8%; background:linear-gradient(90deg,#10b981,#34d399)"></div></div>
+        <div class="sub small muted">= 単月営業利益 ÷ 初期投資額 × 100</div>
         <div class="small muted mt-8" style="font-size:10px">
-          立上期:回収進捗 / 回収期:回収進捗 / 安定期:年率25% / 成熟期:年率20%
+          🟢 正常: 0〜100% / ⚠️ 異常(投資額0 or >100%): アラート発動
         </div>
       </div>
     </div>
@@ -180,20 +168,20 @@
     </div>
   </div>
 
-  <!-- Phase progression history -->
-  <div class="card">
-    <h2>📈 フェーズ遷移履歴 (24ヶ月)</h2>
-    <div class="small muted mb-8">この店舗は 2024/02 オープン → 7ヶ月目に立上期を離脱 → 26ヶ月目に回収完了 → 現在は安定期です。</div>
+  <!-- フェーズ遷移履歴カード: 持ち越しのため参考表示に -->
+  <div class="card" style="opacity:0.7">
+    <h2>📈 フェーズ遷移履歴 (24ヶ月) <span class="badge-mini" style="background:#fef3c7;color:#92400e;">仕様持ち越し・参考</span></h2>
+    <div class="small muted mb-8">投資回収期間ベースのフェーズ別ROI仕様は別途検討中。現時点では参考情報として表示。</div>
     <table class="data">
       <thead>
         <tr>
-          <th>期間</th><th>フェーズ</th><th class="num">月数</th><th class="num">累計営業利益</th><th class="num">回収進捗率</th><th class="num">年率ROI</th>
+          <th>期間</th><th>(旧)想定フェーズ</th><th class="num">月数</th><th class="num">累計営業利益</th><th class="num">回収進捗率</th><th class="num">月次利回り</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>2024/02〜2024/04</td><td><span class="phase-badge phase-launch">🔵 立上期</span></td><td class="num">3</td><td class="num">¥1,200,000</td><td class="num">2.4%</td><td class="num muted">—</td></tr>
-        <tr><td>2024/05〜2026/03</td><td><span class="phase-badge phase-recovery">🟡 回収期</span></td><td class="num">23</td><td class="num">¥48,800,000</td><td class="num">97.6%</td><td class="num muted">—</td></tr>
-        <tr><td>2026/04〜現在</td><td><span class="phase-badge phase-stable">🟢 安定期</span></td><td class="num">1</td><td class="num">¥60,700,000</td><td class="num">121.0%</td><td class="num up">38.5%</td></tr>
+        <tr><td>2024/02〜2024/04</td><td class="muted">立上期</td><td class="num">3</td><td class="num">¥1,200,000</td><td class="num">2.4%</td><td class="num">0.8%</td></tr>
+        <tr><td>2024/05〜2026/03</td><td class="muted">回収期</td><td class="num">23</td><td class="num">¥48,800,000</td><td class="num">97.6%</td><td class="num">4.2%</td></tr>
+        <tr><td>2026/04〜現在</td><td class="muted">安定期</td><td class="num">1</td><td class="num">¥60,700,000</td><td class="num">121.0%</td><td class="num up">3.8%</td></tr>
       </tbody>
     </table>
   </div>
@@ -201,62 +189,72 @@
 </div>
 
 <script>
-  // Mock: switch shop to show different phase examples
+  // Mock: 店舗切替デモ(月次利回り + アラート条件)
+  // フェーズ別仕様は持ち越し。現仕様 = シンプルな月次利回り。
   const shopData = {
-    "1": { // 安定期
-      phase: "stable", badge: "🟢 安定期 Stable", caption: "回収完了後 8ヶ月経過",
-      roiLabel: "年率ROI (直近12ヶ月)", roiValue: "38.5%",
-      formulaNote: "= 直近12ヶ月営業利益 ÷ 初期投資額 × 100",
-      plan: "28ヶ月", actual: "26ヶ月", ratio: "1.21倍"
+    "1": { // 正常: 大型投資で月次3.8%
+      monthlyProfit: "¥1,897,000", initialInvest: "¥50,000,000",
+      monthlyRoi: 3.8, alertType: "none"
     },
-    "2": { // 成熟期
-      phase: "mature", badge: "🟣 成熟期 Mature", caption: "回収完了から 62ヶ月経過",
-      roiLabel: "年率ROI (直近12ヶ月)", roiValue: "42.7%",
-      formulaNote: "= 直近12ヶ月営業利益 ÷ 初期投資額 × 100",
-      plan: "34ヶ月", actual: "30ヶ月", ratio: "3.85倍"
+    "2": { // 正常: 成熟店
+      monthlyProfit: "¥3,200,000", initialInvest: "¥45,000,000",
+      monthlyRoi: 7.1, alertType: "none"
     },
-    "3": { // 安定期
-      phase: "stable", badge: "🟢 安定期 Stable", caption: "回収完了後 18ヶ月経過",
-      roiLabel: "年率ROI (直近12ヶ月)", roiValue: "34.2%",
-      formulaNote: "= 直近12ヶ月営業利益 ÷ 初期投資額 × 100",
-      plan: "32ヶ月", actual: "34ヶ月", ratio: "1.58倍"
+    "3": { // 正常
+      monthlyProfit: "¥2,100,000", initialInvest: "¥38,000,000",
+      monthlyRoi: 5.5, alertType: "none"
     },
-    "4": { // 立上期
-      phase: "launch", badge: "🔵 立上期 Launch", caption: "オープンから 2ヶ月目",
-      roiLabel: "回収進捗率", roiValue: "4.2%",
-      formulaNote: "= 累計営業利益 ÷ 初期投資額 × 100",
-      plan: "30ヶ月 (ベンチマーク予測)", actual: "—", ratio: "0.04倍"
+    "4": { // 異常: 初期投資額未設定(0)
+      monthlyProfit: "¥200,000", initialInvest: "¥0 (未設定)",
+      monthlyRoi: null, alertType: "zero_invest"
     },
-    "5": { // 回収期
-      phase: "recovery", badge: "🟡 回収期 Recovery", caption: "オープンから 18ヶ月目",
-      roiLabel: "回収進捗率", roiValue: "58.3%",
-      formulaNote: "= 累計営業利益 ÷ 初期投資額 × 100",
-      plan: "31ヶ月", actual: "—", ratio: "0.58倍"
+    "5": { // 異常: 月次100%超え(構造エラー)
+      monthlyProfit: "¥3,500,000", initialInvest: "¥2,000,000",
+      monthlyRoi: 175.0, alertType: "over_100"
     }
   };
-  const phaseClass = { launch: "phase-launch", recovery: "phase-recovery", stable: "phase-stable", mature: "phase-mature" };
-  const segIndex   = { launch: 0, recovery: 1, stable: 2, mature: 3 };
+
+  function renderRoi(d) {
+    const elRoi = document.getElementById('roi-value');
+    const elNote = document.getElementById('roi-formula-note');
+    const elProfit = document.getElementById('monthly-profit');
+    const elInvest = document.getElementById('initial-invest');
+    const elStatus = document.getElementById('roi-status');
+    const elAnnual = document.getElementById('annual-reference');
+    const elAlert = document.getElementById('roi-alert');
+
+    elProfit.textContent = d.monthlyProfit;
+    elInvest.textContent = d.initialInvest;
+
+    if (d.alertType === "zero_invest") {
+      elRoi.textContent = "—";
+      elNote.textContent = "計算不可(初期投資額 = 0 または未設定)";
+      elStatus.innerHTML = '⚠️ <span style="color:#b91c1c">異常</span>';
+      elAnnual.textContent = "—";
+      elAlert.style.display = "";
+    } else if (d.alertType === "over_100") {
+      elRoi.textContent = d.monthlyRoi.toFixed(1) + "%";
+      elRoi.style.color = "#b91c1c";
+      elNote.textContent = "= 単月営業利益 ÷ 初期投資額 × 100(構造的異常値)";
+      elStatus.innerHTML = '⚠️ <span style="color:#b91c1c">異常(100%超え)</span>';
+      elAnnual.textContent = (d.monthlyRoi * 12).toFixed(1) + "% (参考)";
+      elAlert.style.display = "";
+    } else {
+      elRoi.textContent = d.monthlyRoi.toFixed(1) + "%";
+      elRoi.style.color = "";
+      elNote.textContent = "= 単月営業利益 " + d.monthlyProfit + " ÷ 初期投資額 " + d.initialInvest + " × 100";
+      elStatus.innerHTML = '🟢 <span style="color:#047857">正常範囲</span>';
+      elAnnual.textContent = (d.monthlyRoi * 12).toFixed(1) + "%";
+      elAlert.style.display = "none";
+    }
+  }
+
+  // 初期表示(店舗1)
+  renderRoi(shopData["1"]);
 
   document.getElementById('shop-selector').addEventListener('change', (e) => {
     const d = shopData[e.target.value];
-    const badge = document.getElementById('phase-badge');
-    badge.className = 'phase-badge ' + phaseClass[d.phase];
-    badge.textContent = d.badge;
-    document.getElementById('phase-caption').textContent = d.caption;
-    document.getElementById('roi-label').textContent = d.roiLabel;
-    document.getElementById('roi-value').textContent = d.roiValue;
-    document.getElementById('roi-formula-note').textContent = d.formulaNote;
-    document.getElementById('plan-payback').textContent = d.plan;
-    document.getElementById('actual-payback').textContent = d.actual;
-    document.getElementById('payback-ratio').textContent = d.ratio;
-
-    // Update phase timeline active segment
-    document.querySelectorAll('.phase-seg').forEach((el, i) => {
-      el.className = 'phase-seg' + (i === segIndex[d.phase] ? (' active-' + d.phase) : '');
-    });
-    document.querySelectorAll('.phase-seg-lbl').forEach((el, i) => {
-      el.classList.toggle('current', i === segIndex[d.phase]);
-    });
+    renderRoi(d);
   });
 </script>
 

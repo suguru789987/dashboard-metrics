@@ -259,8 +259,11 @@
 
       <!-- ROI -->
       <div class="card" style="border-left:4px solid #8b5cf6; margin-top:12px">
-        <h3 style="font-size:14px;margin:0 0 8px">④ ROI</h3>
-        <div class="small muted mb-8">フェーズによって計算方式自体が切り替わる唯一の指標</div>
+        <h3 style="font-size:14px;margin:0 0 8px">④ ROI <span class="badge-mini" style="background:#fef3c7;color:#92400e;">仕様持ち越し・非活性</span></h3>
+        <div class="small muted mb-8">
+          現仕様は<strong>月次利回り = 単月営業利益 ÷ 初期投資額 × 100</strong>。初期投資額=0 または 月次利回り>100% でアラート「初期投資額が設定されていないです」を発動。<br>
+          フェーズ別ROI仕様(投資回収期間ベース)は持ち越し中。以下の設定は非活性(参考表示のみ)。
+        </div>
         <table class="data">
           <thead>
             <tr><th>フェーズ</th><th>計算方式</th><th class="num">目標値</th><th>評価区分</th><th>上限キャップ</th></tr>

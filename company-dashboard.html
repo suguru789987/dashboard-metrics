@@ -84,24 +84,64 @@
         </div>
       </div>
 
-      <!-- ROI -->
-      <div class="tile" style="border-top:3px solid #10b981; background:#f0fdf4;">
-        <div class="lbl">ROI <span class="badge-mini" style="background:#d1fae5;color:#047857;">加重平均</span></div>
-        <div class="val">28.3 <span class="small muted">%</span></div>
-        <div class="small up">目標達成 10/11店 (91%)</div>
-        <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:91%;"></div></div>
+      <!-- ROI: 月次利回り(暫定) -->
+      <div class="tile" style="border-top:3px solid #f59e0b; background:#fffbeb;">
+        <div class="lbl">ROI <span class="badge-mini" style="background:#fef3c7;color:#92400e;">月次利回り(暫定)</span></div>
+        <div class="val">2.4 <span class="small muted">%/月</span></div>
+        <div class="progress mt-8" style="height:6px;"><div class="bar" style="width:2.4%;"></div></div>
         <div class="small muted mt-8" style="font-size:10px;">
-          旧: <span style="text-decoration:line-through">41,972,376.8%</span> → 加重平均で正常化
+          = Σ単月営業利益 ÷ Σ初期投資額 × 100<br>
+          ⚠️ 初期投資額未設定店または100%超え店があればアラート
         </div>
       </div>
+    </div>
+
+    <!-- アラート表示エリア(該当店舗がある場合のみ表示) -->
+    <div id="company-roi-alert" class="warn-banner mt-16">
+      <span>⚠️</span>
+      <span><strong>初期投資額が設定されていないです</strong>:
+        <a href="#alert-shops-list" style="color:#b91c1c;">対象店舗2件</a>
+        (初期投資額=0: 1店 / 月次利回り>100%: 1店) を確認してください。
+      </span>
+    </div>
+
+    <!-- アラート対象店舗一覧 -->
+    <div id="alert-shops-list" class="mt-16" style="border:1px solid #fecaca;border-radius:8px;padding:12px 16px;background:#fef2f2;">
+      <div class="small" style="color:#b91c1c;font-weight:600;margin-bottom:8px;">⚠️ アラート対象店舗(2件)</div>
+      <table class="data" style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>店舗</th><th>業態</th><th class="num">単月営業利益</th>
+            <th class="num">初期投資額</th><th class="num">月次利回り</th><th>異常種別</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>あなたに会えて</td><td>居酒屋</td>
+            <td class="num">¥200,000</td>
+            <td class="num" style="color:#b91c1c">¥0 (未設定)</td>
+            <td class="num">—</td>
+            <td>初期投資額=0</td>
+          </tr>
+          <tr>
+            <td>Bar Lantern 中目黒</td><td>バー</td>
+            <td class="num">¥3,500,000</td>
+            <td class="num">¥2,000,000</td>
+            <td class="num" style="color:#b91c1c">175.0%</td>
+            <td>月次100%超え(構造異常)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="small muted mt-8">→ <a href="settings.html">店舗別設定</a> で初期投資額の確認・修正をお願いします。</div>
     </div>
   </div>
 
   <!-- ────────────────────────────────────────────────── -->
   <!-- 2. フェーズ構成 -->
   <!-- ────────────────────────────────────────────────── -->
-  <div class="card">
-    <h2>📊 フェーズ別 店舗数構成 <span class="badge-mini">全18店</span></h2>
+  <div class="card" style="opacity:0.7">
+    <h2>📊 フェーズ別 店舗数構成 <span class="badge-mini" style="background:#fef3c7;color:#92400e;">仕様持ち越し・参考</span></h2>
+    <div class="small muted mb-8">フェーズ別ROI仕様は別途検討中。本エリアは参考情報として表示。</div>
     <div class="flex" style="gap:24px; align-items:center;">
       <div style="flex:1;">
         <div style="display:flex; height:16px; border-radius:8px; overflow:hidden; background:#f1f4f9;">
@@ -111,10 +151,10 @@
           <div style="flex:3; background:#8b5cf6;" title="成熟期 3店"></div>
         </div>
         <div class="flex mt-8 small" style="gap:18px; flex-wrap:wrap;">
-          <span class="flex"><span class="dot dot-launch"></span>&nbsp;立上期 <strong>2店</strong> (ROI進捗平均 6.1%)</span>
-          <span class="flex"><span class="dot dot-recovery"></span>&nbsp;回収期 <strong>5店</strong> (ROI進捗平均 52.4%)</span>
-          <span class="flex"><span class="dot dot-stable"></span>&nbsp;安定期 <strong>8店</strong> (加重ROI 32.6%)</span>
-          <span class="flex"><span class="dot dot-mature"></span>&nbsp;成熟期 <strong>3店</strong> (加重ROI 22.1%)</span>
+          <span class="flex"><span class="dot dot-launch"></span>&nbsp;立上期 <strong>2店</strong></span>
+          <span class="flex"><span class="dot dot-recovery"></span>&nbsp;回収期 <strong>5店</strong></span>
+          <span class="flex"><span class="dot dot-stable"></span>&nbsp;安定期 <strong>8店</strong></span>
+          <span class="flex"><span class="dot dot-mature"></span>&nbsp;成熟期 <strong>3店</strong></span>
         </div>
       </div>
     </div>
