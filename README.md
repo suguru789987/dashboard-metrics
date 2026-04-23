@@ -3,6 +3,7 @@
 > **制作:** [@suguru789987](https://github.com/suguru789987) (PdM)
 > **担当範囲:** 現行ロジックの構造問題特定 / 4段階フェーズモデル設計 / 業態×フェーズ×係数の三重決定ロジック / 会社ダッシュボードの3ビュー切替情報設計 / 加重平均ROIへの是正
 > **ツール:** Claude Code / HTML / CSS / JavaScript / Markdown
+> **🌐 Live Demo:** https://suguru789987.github.io/dashboard-metrics/
 
 ---
 
