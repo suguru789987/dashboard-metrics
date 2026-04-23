@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>会社ダッシュボード | フェーズ別ROIモック</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="logo">R</span>
+    <span>ラクミー 経営管理 <span class="muted small">— ダッシュボード指標モック</span></span>
+  </div>
+  <nav>
+    <a href="index.html">TOP</a>
+    <a href="shop-dashboard.html">店舗ダッシュボード</a>
+    <a href="company-dashboard.html" class="active">会社ダッシュボード</a>
+    <a href="settings.html">設定</a>
+    <a href="logic-cheatsheet.html">ロジック</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <div class="flex space-between mb-16">
+    <div>
+      <h1 class="page-title">ダッシュボード <span class="muted small">(会社)</span></h1>
+      <p class="page-sub">期間: 2026/04/01 - 2026/04/22 / 対象: 全18店舗</p>
+    </div>
+  </div>
+
+  <div class="warn-banner">
+    <span>⚠️</span>
+    <span>旧ロジックでは会社ROIが <strong>41,972,376.8%</strong> と表示されていました。新ロジック(加重平均)では下記の通り <strong>28.3%</strong> に是正されます。</span>
+  </div>
+
+  <!-- Company ROI hero -->
+  <div class="card">
+    <h2>💡 全社ROI (加重平均)</h2>
+    <div class="roi-hero">
+      <div>
+        <div class="phase-row">
+          <span class="muted small">全店舗加重平均</span>
+        </div>
+        <div class="lbl">年率ROI = Σ(各店直近12ヶ月営業利益) ÷ Σ(各店初期投資額)</div>
+        <div class="main-val" style="color:#047857">28.3%</div>
+        <div class="muted small">投資総額 ¥620,000,000 / 年間営業利益 ¥175,460,000</div>
+
+        <div class="mt-16 small">
+          <div>旧ロジック: <span style="text-decoration:line-through" class="muted">41,972,376.8%</span> (各店ROIの単純和)</div>
+          <div>新ロジック: <strong class="up">28.3%</strong> (分子分母を先に合計してから除算)</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="small muted mb-8">フェーズ別 店舗数構成</div>
+        <div class="flex" style="gap:24px; align-items:center;">
+          <div class="donut">
+            <div class="donut-center">
+              <div style="font-size:18px; font-weight:700">18店</div>
+              <div class="small muted">合計</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div class="flex space-between mb-8"><span class="flex"><span class="dot dot-launch"></span>&nbsp;立上期</span><span><strong>2</strong>店 (11%)</span></div>
+            <div class="flex space-between mb-8"><span class="flex"><span class="dot dot-recovery"></span>&nbsp;回収期</span><span><strong>5</strong>店 (28%)</span></div>
+            <div class="flex space-between mb-8"><span class="flex"><span class="dot dot-stable"></span>&nbsp;安定期</span><span><strong>8</strong>店 (44%)</span></div>
+            <div class="flex space-between mb-8"><span class="flex"><span class="dot dot-mature"></span>&nbsp;成熟期</span><span><strong>3</strong>店 (17%)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase-wise ROI breakdown -->
+  <div class="card">
+    <h2>📊 フェーズ別 年率ROI</h2>
+    <div class="small muted mb-8">安定期/成熟期は加重平均年率ROI、立上期/回収期は回収進捗率を表示</div>
+    <div class="grid grid-4">
+      <div class="tile" style="border-left:4px solid #3b82f6">
+        <div class="lbl"><span class="flex"><span class="dot dot-launch"></span>&nbsp;立上期 (2店)</span></div>
+        <div class="val">平均 6.1%</div>
+        <div class="sub muted">回収進捗率平均</div>
+      </div>
+      <div class="tile" style="border-left:4px solid #eab308">
+        <div class="lbl"><span class="flex"><span class="dot dot-recovery"></span>&nbsp;回収期 (5店)</span></div>
+        <div class="val">平均 52.4%</div>
+        <div class="sub muted">回収進捗率平均</div>
+      </div>
+      <div class="tile" style="border-left:4px solid #10b981">
+        <div class="lbl"><span class="flex"><span class="dot dot-stable"></span>&nbsp;安定期 (8店)</span></div>
+        <div class="val">32.6%</div>
+        <div class="sub muted">年率ROI加重平均</div>
+      </div>
+      <div class="tile" style="border-left:4px solid #8b5cf6">
+        <div class="lbl"><span class="flex"><span class="dot dot-mature"></span>&nbsp;成熟期 (3店)</span></div>
+        <div class="val">22.1%</div>
+        <div class="sub muted">年率ROI加重平均</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company overall metrics (kept) -->
+  <div class="card">
+    <h2>🔥 繁盛店指数 (全店集計)</h2>
+    <div class="grid grid-4">
+      <div class="tile">
+        <div class="lbl">坪月商(税抜) <span class="badge-mini">全店平均</span></div>
+        <div class="val">65.4 <span class="small muted">万円/坪</span></div>
+      </div>
+      <div class="tile">
+        <div class="lbl">営業利益率 <span class="badge-mini">全店平均</span></div>
+        <div class="val">39.7 <span class="small muted">%</span></div>
+      </div>
+      <div class="tile">
+        <div class="lbl">家賃比率 <span class="badge-mini">全店平均</span></div>
+        <div class="val">8.2 <span class="small muted">%</span></div>
+      </div>
+      <div class="tile" style="background:#f0fdf4; border-color:#bbf7d0;">
+        <div class="lbl">ROI <span class="badge-mini" style="background:#d1fae5;color:#047857;">加重平均</span></div>
+        <div class="val">28.3 <span class="small muted">%</span></div>
+        <div class="sub up">旧: 41,972,376.8% → 新ロジックで正常化</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 当月実績 -->
+  <div class="card">
+    <h2>📅 当月実績 (全店合計)</h2>
+    <div class="grid grid-5">
+      <div class="tile">
+        <div class="lbl">営業利益</div>
+        <div class="val">7,178.6 <span class="small muted">万円</span></div>
+        <div class="sub">予算 6,196.0万円 <span class="up">達成率 115.9%</span></div>
+      </div>
+      <div class="tile">
+        <div class="lbl">売上(税抜)</div>
+        <div class="val">17,452.1 <span class="small muted">万円</span></div>
+        <div class="sub">予算 19,082.1万円 <span class="down">達成率 91.5%</span></div>
+      </div>
+      <div class="tile"><div class="lbl">FD仕入率</div><div class="val">24.1 <span class="small muted">%</span></div></div>
+      <div class="tile"><div class="lbl">人件費率</div><div class="val">26.4 <span class="small muted">%</span></div></div>
+      <div class="tile"><div class="lbl">FL率</div><div class="val">50.5 <span class="small muted">%</span></div></div>
+    </div>
+  </div>
+
+  <!-- Shop list with phase -->
+  <div class="card">
+    <h2>🏪 店舗別フェーズ一覧</h2>
+    <table class="data">
+      <thead>
+        <tr>
+          <th>#</th><th>店舗</th><th>業態</th><th>フェーズ</th>
+          <th class="num">初期投資</th><th class="num">累計営業利益</th>
+          <th class="num">回収進捗率</th><th class="num">年率ROI</th>
+          <th class="num">残回収月</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td><td>THE ATTACHMENT 渋谷店</td><td>ダイニング</td>
+          <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+          <td class="num">¥45,000,000</td><td class="num">¥173,250,000</td>
+          <td class="num">385%</td><td class="num up">42.7%</td><td class="num muted">回収済</td>
+        </tr>
+        <tr>
+          <td>2</td><td>Japan dining Mr.gentleman</td><td>ダイニング</td>
+          <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+          <td class="num">¥38,000,000</td><td class="num">¥60,040,000</td>
+          <td class="num">158%</td><td class="num up">34.2%</td><td class="num muted">回収済</td>
+        </tr>
+        <tr>
+          <td>3</td><td>あなたに会えて</td><td>居酒屋</td>
+          <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+          <td class="num">¥28,000,000</td><td class="num">¥1,176,000</td>
+          <td class="num">4.2%</td><td class="num muted">—</td><td class="num">約28ヶ月</td>
+        </tr>
+        <tr>
+          <td>4</td><td>Attachment 2nd</td><td>ダイニング</td>
+          <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+          <td class="num">¥42,000,000</td><td class="num">¥55,440,000</td>
+          <td class="num">132%</td><td class="num up">28.1%</td><td class="num muted">回収済</td>
+        </tr>
+        <tr>
+          <td>5</td><td>Mr.Gentleman Neo Japan Dining 西武新宿店</td><td>ダイニング</td>
+          <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+          <td class="num">¥40,000,000</td><td class="num">¥23,320,000</td>
+          <td class="num">58.3%</td><td class="num muted">—</td><td class="num">約13ヶ月</td>
+        </tr>
+        <tr>
+          <td>6</td><td>Antique Chic Brooch横浜店</td><td>ダイニング</td>
+          <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+          <td class="num">¥50,000,000</td><td class="num">¥60,500,000</td>
+          <td class="num">121%</td><td class="num up">38.5%</td><td class="num muted">回収済</td>
+        </tr>
+        <tr>
+          <td>7</td><td>Bar Lantern 中目黒</td><td>バー</td>
+          <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+          <td class="num">¥18,000,000</td><td class="num">¥9,450,000</td>
+          <td class="num">52.5%</td><td class="num muted">—</td><td class="num">約15ヶ月</td>
+        </tr>
+        <tr>
+          <td>8</td><td>麺処 風神 新橋</td><td>ラーメン</td>
+          <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+          <td class="num">¥22,000,000</td><td class="num">¥79,200,000</td>
+          <td class="num">360%</td><td class="num up">18.7%</td><td class="num muted">回収済</td>
+        </tr>
+        <tr>
+          <td>9</td><td>和食 結 恵比寿</td><td>和食</td>
+          <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+          <td class="num">¥35,000,000</td><td class="num">¥2,800,000</td>
+          <td class="num">8.0%</td><td class="num muted">—</td><td class="num">約32ヶ月</td>
+        </tr>
+        <tr>
+          <td>10</td><td>焼肉亭 虎ノ門</td><td>焼肉</td>
+          <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+          <td class="num">¥55,000,000</td><td class="num">¥82,500,000</td>
+          <td class="num">150%</td><td class="num up">33.8%</td><td class="num muted">回収済</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="small muted mt-8">※ 全18店舗中、上位10件を表示</div>
+  </div>
+
+</div>
+</body>
+</html>

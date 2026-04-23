@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設定 | フェーズ別ROIモック</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="logo">R</span>
+    <span>ラクミー 経営管理 <span class="muted small">— ダッシュボード指標モック</span></span>
+  </div>
+  <nav>
+    <a href="index.html">TOP</a>
+    <a href="shop-dashboard.html">店舗ダッシュボード</a>
+    <a href="company-dashboard.html">会社ダッシュボード</a>
+    <a href="settings.html" class="active">設定</a>
+    <a href="logic-cheatsheet.html">ロジック</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <h1 class="page-title">フェーズ別ROI 設定</h1>
+  <p class="page-sub">会社全体のフェーズモデル、業態ベンチマーク、店舗別パラメータをカスタマイズできます。</p>
+
+  <div class="tabs">
+    <a href="#phase" class="active" onclick="showTab(event,'tab-phase')">① フェーズモデル</a>
+    <a href="#benchmark" onclick="showTab(event,'tab-benchmark')">② 業態ベンチマーク</a>
+    <a href="#shop" onclick="showTab(event,'tab-shop')">③ 店舗別設定</a>
+  </div>
+
+  <!-- Tab 1: Phase model -->
+  <div id="tab-phase">
+    <div class="card">
+      <h2>⚙️ フェーズモデル設定 (会社共通)</h2>
+
+      <div class="grid grid-2">
+        <label class="field">
+          <span>フェーズ段数 <span class="muted">(2〜6段階、デフォルト4)</span></span>
+          <select id="phase-count">
+            <option value="2">2段階 (回収期/完了期)</option>
+            <option value="3">3段階 (立上期/回収期/成熟期)</option>
+            <option value="4" selected>4段階 (立上期/回収期/安定期/成熟期) — デフォルト</option>
+            <option value="5">5段階 (立上期/急成長期/回収期/安定期/成熟期)</option>
+            <option value="6">6段階 (5段階 + 衰退期)</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>フェーズ境界倍率 <span class="muted">(デフォルト1.5倍)</span></span>
+          <input type="number" id="boundary-ratio" value="1.5" step="0.1" min="1.0" max="3.0">
+        </label>
+        <label class="field">
+          <span>立上期月数 <span class="muted">(デフォルト3ヶ月)</span></span>
+          <input type="number" id="launch-months" value="3" min="0" max="12">
+        </label>
+        <label class="field">
+          <span>デフォルト目標回収期間 <span class="muted">(月、デフォルト36)</span></span>
+          <input type="number" id="default-payback" value="36" min="6" max="120">
+        </label>
+      </div>
+
+      <h3 class="small mt-16">各フェーズ定義 <span class="muted">(4段階)</span></h3>
+      <table class="data">
+        <thead>
+          <tr>
+            <th style="width:40px">#</th>
+            <th>フェーズ名</th>
+            <th>判定条件</th>
+            <th>主ROI</th>
+            <th style="width:80px">色</th>
+            <th style="width:60px"></th>
+          </tr>
+        </thead>
+        <tbody id="phase-rows">
+          <tr>
+            <td>1</td>
+            <td><input type="text" value="立上期 Launch"></td>
+            <td>オープンから <input type="number" value="3" style="width:60px;display:inline"> ヶ月未満</td>
+            <td>
+              <select><option selected>回収進捗率(キャップ100%)</option><option>年率ROI</option><option>表示なし</option></select>
+            </td>
+            <td><input type="color" value="#3b82f6" style="width:40px;padding:2px"></td>
+            <td><button class="btn btn-sm btn-danger">削除</button></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><input type="text" value="回収期 Recovery"></td>
+            <td>累計利益 &lt; 初期投資 かつ 立上期終了</td>
+            <td><select><option selected>回収進捗率(キャップ100%)</option><option>年率ROI</option></select></td>
+            <td><input type="color" value="#eab308" style="width:40px;padding:2px"></td>
+            <td><button class="btn btn-sm btn-danger">削除</button></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><input type="text" value="安定期 Stable"></td>
+            <td>回収完了〜目標回収期間×<input type="number" value="1.5" step="0.1" style="width:60px;display:inline">倍</td>
+            <td><select><option selected>年率ROI</option><option>回収倍率</option></select></td>
+            <td><input type="color" value="#10b981" style="width:40px;padding:2px"></td>
+            <td><button class="btn btn-sm btn-danger">削除</button></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><input type="text" value="成熟期 Mature"></td>
+            <td>目標回収期間×<input type="number" value="1.5" step="0.1" style="width:60px;display:inline">倍 超過</td>
+            <td><select><option selected>年率ROI + 3年トレンド</option><option>年率ROI</option></select></td>
+            <td><input type="color" value="#8b5cf6" style="width:40px;padding:2px"></td>
+            <td><button class="btn btn-sm btn-danger">削除</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-8"><button class="btn btn-sm">＋ フェーズを追加</button></div>
+
+      <div class="mt-16 flex">
+        <button class="btn btn-primary">保存</button>
+        <button class="btn">デフォルトに戻す</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Benchmark -->
+  <div id="tab-benchmark" style="display:none">
+    <div class="card">
+      <h2>🏷️ 業態ベンチマーク</h2>
+      <p class="small muted">デフォルト業態(7種)は初期提供。顧客独自の業態を追加登録できます。</p>
+
+      <table class="data">
+        <thead>
+          <tr>
+            <th>業態コード</th>
+            <th>業態名</th>
+            <th class="num">坪月商(万円)</th>
+            <th class="num">営業利益率(%)</th>
+            <th class="num">目安回収期間(月)</th>
+            <th>提供元</th>
+            <th style="width:60px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>IZAKAYA</td><td>居酒屋</td><td class="num"><input type="number" value="15" style="width:70px"></td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="30" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>DINING</td><td>ダイニング</td><td class="num"><input type="number" value="17.5" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>CAFE</td><td>カフェ</td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="8" style="width:70px"></td><td class="num"><input type="number" value="48" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>RAMEN</td><td>ラーメン</td><td class="num"><input type="number" value="22" style="width:70px"></td><td class="num"><input type="number" value="15" style="width:70px"></td><td class="num"><input type="number" value="24" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>YAKINIKU</td><td>焼肉</td><td class="num"><input type="number" value="20" style="width:70px"></td><td class="num"><input type="number" value="14" style="width:70px"></td><td class="num"><input type="number" value="30" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>BAR</td><td>バー</td><td class="num"><input type="number" value="10" style="width:70px"></td><td class="num"><input type="number" value="20" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr><td>WASHOKU</td><td>和食</td><td class="num"><input type="number" value="18" style="width:70px"></td><td class="num"><input type="number" value="12" style="width:70px"></td><td class="num"><input type="number" value="36" style="width:70px"></td><td class="muted">デフォルト</td><td><button class="btn btn-sm">複製</button></td></tr>
+          <tr style="background:#fef9c3">
+            <td><input type="text" value="BISTRO" style="width:90px"></td>
+            <td><input type="text" value="ビストロ(カスタム)" style="width:160px"></td>
+            <td class="num"><input type="number" value="16" style="width:70px"></td>
+            <td class="num"><input type="number" value="11" style="width:70px"></td>
+            <td class="num"><input type="number" value="40" style="width:70px"></td>
+            <td><span class="badge-mini" style="background:#fde68a;color:#92400e">カスタム</span></td>
+            <td><button class="btn btn-sm btn-danger">削除</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-16 flex space-between">
+        <button class="btn btn-sm">＋ カスタム業態を追加</button>
+        <div class="flex">
+          <button class="btn btn-primary">保存</button>
+        </div>
+      </div>
+
+      <div class="info-banner mt-16">
+        <span>💡</span>
+        <span>業態坪月商は「売上予測方式=業界ベンチマーク」選択店舗の回収期間算出に使われます。また店舗画面の坪月商タイルの警告判定(±20%)にも利用されます。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Shop-level -->
+  <div id="tab-shop" style="display:none">
+    <div class="card">
+      <h2>🏪 店舗別 ROI設定</h2>
+      <p class="small muted">店舗ごとに業態/初期投資/オープン日/目標回収期間/ROI算出方式/境界倍率オーバーライドを設定できます。</p>
+
+      <table class="data">
+        <thead>
+          <tr>
+            <th>店舗</th>
+            <th>業態</th>
+            <th class="num">初期投資</th>
+            <th>オープン日</th>
+            <th class="num">目標回収(月)</th>
+            <th>ROI算出方式</th>
+            <th class="num">境界倍率</th>
+            <th>現在フェーズ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Antique Chic Brooch横浜店</td>
+            <td><select><option>ダイニング</option><option>居酒屋</option><option>和食</option></select></td>
+            <td class="num"><input type="number" value="50000000" style="width:110px"></td>
+            <td><input type="date" value="2024-02-01" style="width:130px"></td>
+            <td class="num"><input type="number" value="36" style="width:70px"></td>
+            <td><select><option selected>①実績(直近3ヶ月)</option><option>①実績(直近6ヶ月)</option><option>②業界ベンチマーク</option><option>③予算</option></select></td>
+            <td class="num"><input type="number" value="1.5" step="0.1" style="width:70px"></td>
+            <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+          </tr>
+          <tr>
+            <td>THE ATTACHMENT 渋谷店</td>
+            <td><select><option>ダイニング</option></select></td>
+            <td class="num"><input type="number" value="45000000" style="width:110px"></td>
+            <td><input type="date" value="2018-05-15" style="width:130px"></td>
+            <td class="num"><input type="number" value="36" style="width:70px"></td>
+            <td><select><option selected>①実績(直近6ヶ月)</option></select></td>
+            <td class="num"><input type="number" value="1.5" step="0.1" style="width:70px"></td>
+            <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+          </tr>
+          <tr>
+            <td>あなたに会えて</td>
+            <td><select><option>居酒屋</option><option>ダイニング</option></select></td>
+            <td class="num"><input type="number" value="28000000" style="width:110px"></td>
+            <td><input type="date" value="2026-03-01" style="width:130px"></td>
+            <td class="num"><input type="number" value="30" style="width:70px"></td>
+            <td><select><option selected>②業界ベンチマーク</option><option>③予算</option></select></td>
+            <td class="num"><input type="number" value="1.5" step="0.1" style="width:70px"></td>
+            <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+          </tr>
+          <tr>
+            <td>Japan dining Mr.gentleman</td>
+            <td><select><option>ダイニング</option></select></td>
+            <td class="num"><input type="number" value="38000000" style="width:110px"></td>
+            <td><input type="date" value="2022-08-20" style="width:130px"></td>
+            <td class="num"><input type="number" value="36" style="width:70px"></td>
+            <td><select><option selected>①実績(直近3ヶ月)</option></select></td>
+            <td class="num"><input type="number" value="1.5" step="0.1" style="width:70px"></td>
+            <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+          </tr>
+          <tr>
+            <td>Mr.Gentleman Neo Japan Dining 西武新宿店</td>
+            <td><select><option>ダイニング</option></select></td>
+            <td class="num"><input type="number" value="40000000" style="width:110px"></td>
+            <td><input type="date" value="2024-10-01" style="width:130px"></td>
+            <td class="num"><input type="number" value="31" style="width:70px"></td>
+            <td><select><option selected>①実績(直近3ヶ月)</option><option>③予算</option></select></td>
+            <td class="num"><input type="number" value="1.8" step="0.1" style="width:70px"></td>
+            <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-16 flex"><button class="btn btn-primary">保存</button></div>
+
+      <div class="info-banner mt-16">
+        <span>💡</span>
+        <span>境界倍率は会社デフォルト(1.5)から店舗単位でオーバーライドできます。例: 回転率が高い小規模店は1.2、大型店は2.0など。</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(e, id) {
+  e.preventDefault();
+  ['tab-phase','tab-benchmark','tab-shop'].forEach(i => document.getElementById(i).style.display = (i === id ? '' : 'none'));
+  document.querySelectorAll('.tabs > a').forEach(a => a.classList.remove('active'));
+  e.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

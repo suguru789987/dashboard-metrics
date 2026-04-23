@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ダッシュボード指標モック | TOP</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="logo">R</span>
+    <span>ラクミー 経営管理 <span class="muted small">— ダッシュボード指標モック</span></span>
+  </div>
+  <nav>
+    <a href="index.html" class="active">TOP</a>
+    <a href="shop-dashboard.html">店舗ダッシュボード</a>
+    <a href="company-dashboard.html">会社ダッシュボード</a>
+    <a href="settings.html">設定</a>
+    <a href="logic-cheatsheet.html">ロジック</a>
+  </nav>
+</div>
+
+<div class="page">
+  <h1 class="page-title">フェーズ別ROI 仕様モック</h1>
+  <p class="page-sub">投資回収期間をベースに、店舗ライフサイクルのフェーズごとにROI表示を切り替える仕様のモックアップ。</p>
+
+  <div class="info-banner">
+    <span>ℹ️</span>
+    <span>これは仕様確認用のモックです。本番データは接続されていません。入力値はローカルに保存されません。</span>
+  </div>
+
+  <div class="grid grid-2">
+    <a href="shop-dashboard.html" class="card" style="text-decoration:none; color:inherit;">
+      <h2>🏪 店舗ダッシュボード</h2>
+      <div class="muted small mb-8">単一店舗のフェーズ判定とROI表示</div>
+      <ul class="small">
+        <li>フェーズバッジ + 主ROI(フェーズ別)</li>
+        <li>回収進捗バー / 予測回収月 / 回収倍率</li>
+        <li>フェーズ4段階のタイムライン表示</li>
+        <li>坪月商 vs 業態ベンチマーク判定</li>
+      </ul>
+    </a>
+
+    <a href="company-dashboard.html" class="card" style="text-decoration:none; color:inherit;">
+      <h2>🏢 会社ダッシュボード</h2>
+      <div class="muted small mb-8">全店舗を加重平均したROIとフェーズ別構成</div>
+      <ul class="small">
+        <li>全社ROI = Σ(利益)÷Σ(投資) の加重平均</li>
+        <li>フェーズ別店舗数構成 / フェーズ別ROI</li>
+        <li>店舗別フェーズ一覧テーブル</li>
+      </ul>
+    </a>
+
+    <a href="settings.html" class="card" style="text-decoration:none; color:inherit;">
+      <h2>⚙️ 設定画面</h2>
+      <div class="muted small mb-8">フェーズモデル/境界倍率/業態ベンチマーク/店舗別設定</div>
+      <ul class="small">
+        <li>フェーズ段数(2〜6) + 各フェーズ閾値/色のカスタマイズ</li>
+        <li>境界倍率(デフォルト1.5) 会社/店舗でオーバーライド</li>
+        <li>業態マスタ(デフォルト7業態+顧客カスタム登録)</li>
+        <li>店舗別: 業態/初期投資/オープン日/目標回収期間/ROI算出方式</li>
+      </ul>
+    </a>
+
+    <a href="logic-cheatsheet.html" class="card" style="text-decoration:none; color:inherit;">
+      <h2>📐 ロジック可視化</h2>
+      <div class="muted small mb-8">計算式/フェーズ判定/移行手順の一覧</div>
+      <ul class="small">
+        <li>投資回収期間/回収進捗/年率ROIの計算式</li>
+        <li>フェーズ判定フローチャート</li>
+        <li>会社ROI加重平均ロジック</li>
+        <li>売上予測方式の比較</li>
+      </ul>
+    </a>
+  </div>
+
+  <div class="card mt-24">
+    <h2>📄 関連ドキュメント</h2>
+    <ul class="small">
+      <li><a href="README.md">README.md</a> — 概要・設計方針</li>
+      <li><a href="SPEC.md">SPEC.md</a> — 詳細仕様書</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

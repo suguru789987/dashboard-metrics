@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ロジック可視化 | フェーズ別ROIモック</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="logo">R</span>
+    <span>ラクミー 経営管理 <span class="muted small">— ダッシュボード指標モック</span></span>
+  </div>
+  <nav>
+    <a href="index.html">TOP</a>
+    <a href="shop-dashboard.html">店舗ダッシュボード</a>
+    <a href="company-dashboard.html">会社ダッシュボード</a>
+    <a href="settings.html">設定</a>
+    <a href="logic-cheatsheet.html" class="active">ロジック</a>
+  </nav>
+</div>
+
+<div class="page">
+  <h1 class="page-title">ロジック可視化 (チートシート)</h1>
+  <p class="page-sub">投資回収期間とフェーズ別ROIの計算式、判定フロー、データフローを一覧化。</p>
+
+  <div class="card">
+    <h2>🧮 基本計算式</h2>
+    <div class="formula">
+<span class="c"># 投資回収期間 (計画値) — 設定画面の「ROI算出方式」に基づく</span>
+<span class="k">投資回収期間(月)</span> = <span class="n">初期投資額</span> ÷ <span class="n">月次予測営業利益</span>
+
+<span class="c"># 月次予測営業利益 — 3方式から手動選択</span>
+① 実績ベース     : AVG(直近3ヶ月営業利益) または AVG(直近6ヶ月営業利益)
+② 業界ベンチマーク: 坪数 × 業態坪月商(万円) × 30(日) × 営業利益率
+③ 予算ベース     : 月次予算営業利益
+
+<span class="c"># 投資回収期間 (実績/予測)</span>
+<span class="k">回収進捗率(%)</span>   = <span class="n">累計営業利益(オープン月〜現在)</span> ÷ <span class="n">初期投資額</span> × 100
+<span class="k">残回収月数</span>     = MAX(0, (<span class="n">初期投資額</span> − <span class="n">累計営業利益</span>) ÷ <span class="n">直近3ヶ月平均営業利益</span>)
+<span class="k">実績回収月数</span>   = 累計営業利益が初期投資額に達した月 − オープン月
+
+<span class="c"># 年率ROI (安定期/成熟期で使用)</span>
+<span class="k">年率ROI(%)</span> = <span class="n">直近12ヶ月営業利益</span> ÷ <span class="n">初期投資額</span> × 100
+
+<span class="c"># 回収倍率</span>
+<span class="k">回収倍率</span> = <span class="n">累計営業利益</span> ÷ <span class="n">初期投資額</span>
+</div>
+  </div>
+
+  <div class="card">
+    <h2>🔀 フェーズ判定フロー (4段階 デフォルト)</h2>
+    <div class="formula">
+<span class="c"># 入力</span>
+opened_months   = 現在月 − オープン月
+cumulative_prof = 累計営業利益(オープン〜現在)
+initial_invest  = 初期投資額
+target_payback  = 目標回収期間(月)   <span class="c"># 店舗単位 (デフォ36)</span>
+launch_months   = 立上期月数         <span class="c"># 会社単位 (デフォ3)</span>
+boundary_ratio  = 境界倍率           <span class="c"># 店舗or会社 (デフォ1.5)</span>
+
+<span class="c"># 判定 (上から順に評価、最初に一致したフェーズを採用)</span>
+<span class="k">if</span> opened_months &lt; launch_months:
+    → <span class="n">🔵 立上期 Launch</span>
+<span class="k">elif</span> cumulative_prof &lt; initial_invest:
+    → <span class="n">🟡 回収期 Recovery</span>
+<span class="k">elif</span> opened_months &lt;= target_payback × boundary_ratio:
+    → <span class="n">🟢 安定期 Stable</span>
+<span class="k">else</span>:
+    → <span class="n">🟣 成熟期 Mature</span>
+</div>
+
+    <div class="mt-16">
+      <table class="data">
+        <thead>
+          <tr><th>フェーズ</th><th>主表示ROI</th><th>ROIの上限キャップ</th><th>意味合い</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="phase-badge phase-launch">🔵 立上期</span></td>
+            <td>回収進捗率</td>
+            <td>100%</td>
+            <td>開店直後の立ち上げ期。まだ評価段階ではない。</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge phase-recovery">🟡 回収期</span></td>
+            <td>回収進捗率</td>
+            <td>100%</td>
+            <td>初期投資回収に向けた期間。年率ROI表示は混乱を招くため非表示。</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge phase-stable">🟢 安定期</span></td>
+            <td>年率ROI</td>
+            <td>なし(異常値は警告)</td>
+            <td>回収完了後の通常評価フェーズ。</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge phase-mature">🟣 成熟期</span></td>
+            <td>年率ROI + 3年トレンド</td>
+            <td>なし(異常値は警告)</td>
+            <td>長期運営店舗。減価償却終了や設備老朽化を加味。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 会社ROI 加重平均ロジック</h2>
+    <div class="formula">
+<span class="c"># 旧ロジック (破綻の原因)</span>
+<span class="k">会社ROI(旧)</span> = Σ(各店舗ROI) = Σ(各店舗月次利益 ÷ 各店舗初期投資)  <span class="c"># → 41,972,376.8%</span>
+
+<span class="c"># 新ロジック (加重平均)</span>
+<span class="k">会社ROI(新)</span> = Σ(各店直近12ヶ月営業利益) ÷ Σ(各店初期投資額) × 100
+
+<span class="c"># フェーズ別集計 (安定期/成熟期のみ年率ROI、立上期/回収期は回収進捗率)</span>
+<span class="k">フェーズ別ROI</span> = Σ(該当フェーズ店直近12ヶ月利益) ÷ Σ(該当フェーズ店初期投資) × 100
+</div>
+
+    <div class="info-banner mt-16">
+      <span>💡</span>
+      <span>会社ダッシュボードでは「全社ROI(加重平均)」に加え、フェーズ別ROIも併記します。立上期店舗の低ROIで全社ROIが押し下げられるのを避けるため、「安定期+成熟期のみでの加重平均」も別枠で表示することを推奨。</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🗂️ データ要件</h2>
+    <table class="data">
+      <thead>
+        <tr><th>項目</th><th>ラクミー保有</th><th>取得元</th><th>新規必要</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>初期投資額</td><td>✅</td><td>店舗設定</td><td>—</td></tr>
+        <tr><td>オープン日</td><td>✅</td><td>店舗マスタ</td><td>—</td></tr>
+        <tr><td>月次営業利益(実績)</td><td>✅</td><td>POS + 費用設定</td><td>—</td></tr>
+        <tr><td>月次予算営業利益</td><td>✅</td><td>予算機能</td><td>—</td></tr>
+        <tr><td>坪数</td><td>✅</td><td>店舗マスタ</td><td>—</td></tr>
+        <tr><td>業態コード</td><td>❌</td><td>—</td><td>🆕 店舗マスタに追加</td></tr>
+        <tr><td>業態マスタ(坪月商/利益率)</td><td>❌</td><td>—</td><td>🆕 新規マスタ</td></tr>
+        <tr><td>ROI算出方式</td><td>❌</td><td>—</td><td>🆕 店舗設定に追加</td></tr>
+        <tr><td>目標回収期間</td><td>❌</td><td>—</td><td>🆕 店舗設定に追加</td></tr>
+        <tr><td>境界倍率</td><td>❌</td><td>—</td><td>🆕 会社/店舗設定に追加</td></tr>
+        <tr><td>フェーズモデル定義</td><td>❌</td><td>—</td><td>🆕 会社設定に追加</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🔄 売上予測方式の比較</h2>
+    <table class="data">
+      <thead>
+        <tr>
+          <th>方式</th><th>計算式</th><th>メリット</th><th>デメリット</th><th>推奨シーン</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>① 実績ベース</td>
+          <td>直近3/6ヶ月営業利益平均</td>
+          <td>直近の状態を反映</td>
+          <td>オープン直後は使えない<br>季節変動の影響大</td>
+          <td>オープン6ヶ月以上経過店</td>
+        </tr>
+        <tr>
+          <td>② 業界ベンチマーク</td>
+          <td>坪数 × 業態坪月商 × 30日 × 営業利益率</td>
+          <td>オープン前後でも算出可能</td>
+          <td>実店舗特性を無視</td>
+          <td>新規オープン店、ベンチマーク比較</td>
+        </tr>
+        <tr>
+          <td>③ 予算ベース</td>
+          <td>月次予算営業利益(12ヶ月)</td>
+          <td>経営計画との整合性高</td>
+          <td>予算設定が必須</td>
+          <td>予算運用済み店舗</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🏗️ 移行ステップ (開発参考)</h2>
+    <ol class="small">
+      <li>マスタ拡張: 業態マスタ新設、店舗マスタに業態/ROI算出方式/目標回収期間/境界倍率を追加</li>
+      <li>会社設定テーブルにフェーズモデル設定を追加</li>
+      <li>バックエンド: 計算ロジックの実装 (フェーズ判定/回収進捗/年率ROI/加重平均会社ROI)</li>
+      <li>設定画面UI: ①フェーズモデル ②業態ベンチマーク ③店舗別設定</li>
+      <li>店舗ダッシュボード: ROIタイルをフェーズバッジ付きに改修</li>
+      <li>会社ダッシュボード: 加重平均表示 + フェーズ別構成 + 店舗別フェーズ一覧</li>
+      <li>既存データ移行: デフォルト業態未割当店には「ダイニング」を初期設定、境界倍率は1.5倍デフォルト</li>
+      <li>運用開始前にUAT: 主要店舗5〜10店のフェーズ判定結果をオーナーと照合</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>⚠️ 論点 / 未決事項</h2>
+    <ul class="small">
+      <li>オープン日未登録店舗の扱い（デフォルト起点として「ラクミー導入日」or「事業開始日」を使用するか）</li>
+      <li>閉店予定店舗 / 業態変更店舗のフェーズ扱い（リセット or 継続）</li>
+      <li>リニューアル/改装時に「再投資額」を追加投資として扱うか、新規回収期間としてリセットするか</li>
+      <li>複数ブランド混在の場合、業態別の全社ROIを分けて表示するか</li>
+      <li>月次の営業利益がマイナスの月を回収計算に含めるか（累計には含めるが予測平均からは除外する等）</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
